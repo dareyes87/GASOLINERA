@@ -7,9 +7,12 @@ package com.mycompany.gasolinera.vista;
 import com.mycompany.gasolinera.modelo.DIESEL;
 import com.mycompany.gasolinera.modelo.OPERACIONES;
 import com.mycompany.gasolinera.modelo.REGULAR;
+import com.mycompany.gasolinera.modelo.RegistroVentas;
 import com.mycompany.gasolinera.modelo.SUPER;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -21,9 +24,12 @@ public class Gasolinera_Servicio extends javax.swing.JFrame implements ActionLis
     DIESEL diesel = new DIESEL();
     REGULAR reguar = new REGULAR();
     SUPER sup = new SUPER();
+    RegistroVentas ventas = new RegistroVentas();
+    List<RegistroVentas> listaVentas;
     public Gasolinera_Servicio() {
         initComponents();
         btnCompra.addActionListener(this);
+        listaVentas = new ArrayList();
     }
 
     /**
