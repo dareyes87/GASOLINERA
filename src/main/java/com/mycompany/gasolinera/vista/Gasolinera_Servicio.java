@@ -7,12 +7,11 @@ package com.mycompany.gasolinera.vista;
 import com.mycompany.gasolinera.modelo.DIESEL;
 import com.mycompany.gasolinera.modelo.OPERACIONES;
 import com.mycompany.gasolinera.modelo.REGULAR;
-import com.mycompany.gasolinera.modelo.RegistroVentas;
 import com.mycompany.gasolinera.modelo.SUPER;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
+import javax.swing.JOptionPane;
+import java.time.LocalDateTime;
 
 /**
  *
@@ -24,12 +23,10 @@ public class Gasolinera_Servicio extends javax.swing.JFrame implements ActionLis
     DIESEL diesel = new DIESEL();
     REGULAR reguar = new REGULAR();
     SUPER sup = new SUPER();
-    RegistroVentas ventas = new RegistroVentas();
-    List<RegistroVentas> listaVentas;
+    
     public Gasolinera_Servicio() {
         initComponents();
         btnCompra.addActionListener(this);
-        listaVentas = new ArrayList();
     }
 
     /**
@@ -56,7 +53,7 @@ public class Gasolinera_Servicio extends javax.swing.JFrame implements ActionLis
         txtCostoGalon = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         txtTotal = new javax.swing.JLabel();
-        jProgressBar1 = new javax.swing.JProgressBar();
+        progresGas = new javax.swing.JProgressBar();
         btnCompra = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
@@ -105,9 +102,15 @@ public class Gasolinera_Servicio extends javax.swing.JFrame implements ActionLis
 
         jLabel4.setText("CANTIDAD DE GALONES:");
 
-        jLabel5.setText("COSTO POR GALON:");
+        spinnerCantidad.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                spinnerCantidadStateChanged(evt);
+            }
+        });
 
-        jLabel6.setText("TOTAL:");
+        jLabel5.setText("COSTO POR GALON: Q");
+
+        jLabel6.setText("TOTAL: Q");
 
         btnCompra.setText("EFECTUAR COMPRA");
 
@@ -148,7 +151,7 @@ public class Gasolinera_Servicio extends javax.swing.JFrame implements ActionLis
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addGap(0, 187, Short.MAX_VALUE)
-                        .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(progresGas, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(187, 187, 187))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -180,7 +183,7 @@ public class Gasolinera_Servicio extends javax.swing.JFrame implements ActionLis
                             .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(progresGas, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(36, 36, 36)
                 .addComponent(btnCompra)
                 .addContainerGap(78, Short.MAX_VALUE))
@@ -192,10 +195,7 @@ public class Gasolinera_Servicio extends javax.swing.JFrame implements ActionLis
 
         tableVentas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
                 "GASOLINA", "TOTAL", "FECHA"
@@ -275,6 +275,18 @@ public class Gasolinera_Servicio extends javax.swing.JFrame implements ActionLis
         }
     }//GEN-LAST:event_boxGasActionPerformed
 
+    private void spinnerCantidadStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spinnerCantidadStateChanged
+        String cantidadStr = spinnerCantidad.getValue().toString();
+        String precioStr = txtCostoGalon.getText();
+
+        float cantidad = Float.parseFloat(cantidadStr);
+        float precio = Float.parseFloat(precioStr);
+
+        float total = cantidad * precio;
+
+        txtTotal.setText(String.valueOf(total));
+    }//GEN-LAST:event_spinnerCantidadStateChanged
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> boxGas;
@@ -291,10 +303,10 @@ public class Gasolinera_Servicio extends javax.swing.JFrame implements ActionLis
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JProgressBar progresGas;
     private javax.swing.JSpinner spinnerCantidad;
     private javax.swing.JTable tableVentas;
     private javax.swing.JLabel txtCostoGalon;
@@ -307,11 +319,18 @@ public void actionPerformed(ActionEvent e) {
             String gasolina = boxGas.getSelectedItem().toString();
             float cantidad = Float.parseFloat(spinnerCantidad.getValue().toString());
             float total = operaciones.Venta(gasolina, cantidad);
+            progresGas.setValue(operaciones.statusGas(gasolina));
+            mensaje(total);
             System.out.println(cantidad);
-            System.out.println(gasolina);
+            System.out.println(LocalDateTime.now());
             System.out.println("Efectuando Compra");
+            operaciones.listaVentas(tableVentas);
         }
         
+    }
+
+    private void mensaje(float total){
+        JOptionPane.showMessageDialog(null, "Gracias por su compra, total: Q"+total);
     }
 
 }

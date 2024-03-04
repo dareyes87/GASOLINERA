@@ -9,12 +9,13 @@ package com.mycompany.gasolinera.modelo;
  * @author 1214k
  */
 public class SUPER {
-    private float Super = 10000;
+    public int Super = 1000;
     private float superPrecio = 34.32f;
     
     public float venta(float cantidad){
         float total = this.superPrecio * cantidad;
-                
+        this.Super = (int) (Super - total); 
+        
         return total;
     }
 
@@ -22,7 +23,7 @@ public class SUPER {
         return Super;
     }
 
-    public void setSuper(float Super) {
+    public void setSuper(int Super) {
         this.Super = Super;
     }
 

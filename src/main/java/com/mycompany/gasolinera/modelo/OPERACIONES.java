@@ -4,30 +4,83 @@
  */
 package com.mycompany.gasolinera.modelo;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
+
 /**
  *
  * @author 1214k
  */
 public class OPERACIONES {
+
+    SUPER sup = new SUPER();
+    DIESEL dis = new DIESEL();
+    REGULAR reg = new REGULAR();
+    
+    RegistroVentas ventas = new RegistroVentas();
+    List<RegistroVentas> listaVentas;
+    
+    public OPERACIONES() {
+        listaVentas = new ArrayList<>();
+    }
+    
     public float Venta(String gasolina, float cantidad){
         
         float total = 0.0f;
         
-        if(gasolina == "SUPER"){
-            SUPER sup = new SUPER();
+        if(gasolina.equals("SUPER")){
             total = sup.venta(cantidad);
-            System.out.println(total);
+            registroVentas(gasolina, total);
         } 
-        if(gasolina == "DIESEL"){
-            DIESEL dis = new DIESEL();
+        if(gasolina.equals("DIESEL")){
             total = dis.venta(cantidad);
-            
+            registroVentas(gasolina, total);
         } 
-        if (gasolina == "REGULAR"){
-            REGULAR reg = new REGULAR();
+        if (gasolina.equals("REGULAR")){
             total = reg.venta(cantidad);
+            registroVentas(gasolina, total);
         }
         
         return total;
     }
+    
+    public int statusGas(String gasolina){
+        
+        int restante = 0;
+        
+        if(gasolina == "SUPER"){
+            restante = sup.Super * 100 / 1000;
+        } 
+        if(gasolina == "DIESEL"){
+            restante = dis.diesel * 100 / 1000;
+        } 
+        if (gasolina == "REGULAR"){
+            restante = reg.regular * 100 / 1000;
+        }
+        
+        return restante;
+    }
+    
+    public void listaVentas(JTable tablemodel) {
+        DefaultTableModel model = (DefaultTableModel) tablemodel.getModel();
+        
+        model.addRow(new Object[]{ventas.getTipoGasolina(), ventas.getTotal(), ventas.getFecha()});
+
+    }
+    
+    private void registroVentas(String gasolina, float total){
+        ventas.setTipoGasolina(gasolina);
+        ventas.setTotal(total);
+        ventas.setFecha(LocalDateTime.now());
+        
+        listaVentas.add(ventas);
+    }
+    
 }

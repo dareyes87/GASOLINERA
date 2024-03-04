@@ -4,6 +4,10 @@
  */
 package com.mycompany.gasolinera.modelo;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
+
 /**
  *
  * @author 1214k
@@ -11,6 +15,35 @@ package com.mycompany.gasolinera.modelo;
 public class RegistroVentas {
     private String tipoGasolina;
     private float total;
+    private LocalDateTime fecha;
+
+    public String getTipoGasolina() {
+        return tipoGasolina;
+    }
+
+    public void setTipoGasolina(String tipoGasolina) {
+        this.tipoGasolina = tipoGasolina;
+    }
+
+    public float getTotal() {
+        return total;
+    }
+
+    public void setTotal(float total) {
+        this.total = total;
+    }
+
+    public LocalDateTime getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(LocalDateTime fecha) {
+        this.fecha = fecha;
+    }
+
+    
+    
+    
     
     
 }

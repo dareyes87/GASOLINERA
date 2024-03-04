@@ -9,11 +9,12 @@ package com.mycompany.gasolinera.modelo;
  * @author 1214k
  */
 public class DIESEL {
-    private float diesel = 10000;
+    public int diesel = 1000;
     private float dieselPrecio = 31.32f;
     
     public float venta(float cantidad){
         float total = this.dieselPrecio * cantidad;
+        this.diesel = (int) (diesel - total);
                 
         return total;
     }
@@ -22,7 +23,7 @@ public class DIESEL {
         return diesel;
     }
 
-    public void setDiesel(float diesel) {
+    public void setDiesel(int diesel) {
         this.diesel = diesel;
     }
 

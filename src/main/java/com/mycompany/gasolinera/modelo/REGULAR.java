@@ -9,12 +9,12 @@ package com.mycompany.gasolinera.modelo;
  * @author 1214k
  */
 public class REGULAR {
-    private float regular = 10000;
+    public int regular = 1000;
     private float regularPrecio = 33.32f;
     
     public float venta(float cantidad){
-        float total = this.regular * cantidad;
-                
+        float total = this.regularPrecio * cantidad;
+        this.regular = (int) (regular - total);     
         return total;
     }
 
@@ -22,7 +22,7 @@ public class REGULAR {
         return regular;
     }
 
-    public void setRegular(float regular) {
+    public void setRegular(int regular) {
         this.regular = regular;
     }
 
