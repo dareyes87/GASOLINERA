@@ -5,12 +5,10 @@
 package com.mycompany.gasolinera.modelo;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.List;
-import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 
@@ -70,9 +68,14 @@ public class OPERACIONES {
     
     public void listaVentas(JTable tablemodel) {
         DefaultTableModel model = (DefaultTableModel) tablemodel.getModel();
+        model.addRow(new Object[]{ventas.getTipoGasolina(), "Q"+ventas.getTotal(), ventas.getFecha()});
         
-        model.addRow(new Object[]{ventas.getTipoGasolina(), ventas.getTotal(), ventas.getFecha()});
-
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
+        
+        for (int columnIndex = 0; columnIndex < model.getColumnCount(); columnIndex++) {
+        tablemodel.getColumnModel().getColumn(columnIndex).setCellRenderer(centerRenderer);
+    }
     }
     
     private void registroVentas(String gasolina, float total){
